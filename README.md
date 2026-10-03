@@ -16,8 +16,10 @@ https://raw.githubusercontent.com/zzpice/routeros-adlist/main/adlist.txt
 
 RouterOS：
 
+使用前请确认设备时间正确，并按当前 RouterOS 版本启用可信 CA 存储或导入所需 CA 证书。
+
 ```routeros
-/ip/dns/adlist/add url="https://raw.githubusercontent.com/zzpice/routeros-adlist/main/adlist.txt" ssl-verify=no
+/ip/dns/adlist/add url="https://raw.githubusercontent.com/zzpice/routeros-adlist/main/adlist.txt" ssl-verify=yes
 ```
 
 检查导入状态：
@@ -28,7 +30,7 @@ RouterOS：
 
 `name-count` 应显示已加载的域名数量。RouterOS 会使用 DNS 缓存保存 Adlist 条目，因此请确保 DNS cache 有足够空间。
 
-> 如果路由器已经正确配置可信 CA，可以将 `ssl-verify` 改为 `yes`。
+> 若证书校验失败，请先检查设备时间和 CA 配置。`ssl-verify=no` 会取消对下载来源的身份验证，仅用于临时排障，排障后应恢复为 `yes`。
 
 ## 自动更新
 
@@ -55,7 +57,7 @@ GitHub Actions 每 6 小时检查一次 anti-AD：
 
 ## 本地生成
 
-只需要 Python 3，无第三方依赖：
+只需要 Python 3.10+，无第三方依赖：
 
 ```bash
 python convert.py
