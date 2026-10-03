@@ -14,7 +14,10 @@ from urllib.request import Request, urlopen
 DEFAULT_SOURCE = "https://anti-ad.net/domains.txt"
 DEFAULT_OUTPUT = "adlist.txt"
 DEFAULT_MIN_DOMAINS = 50_000
-USER_AGENT = "zzpice/adlist (+https://github.com/zzpice/adlist)"
+USER_AGENT = (
+    "zzpice/routeros-adlist "
+    "(+https://github.com/zzpice/routeros-adlist)"
+)
 
 _LABEL_RE = re.compile(r"^[a-z0-9_](?:[a-z0-9_-]{0,61}[a-z0-9_])?$", re.IGNORECASE)
 
