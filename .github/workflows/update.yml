@@ -1,4 +1,4 @@
-name: Update adlist
+name: Update RouterOS adlist
 
 on:
   workflow_dispatch:
