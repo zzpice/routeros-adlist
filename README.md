@@ -1,6 +1,11 @@
 # routeros-adlist
 
+> 将 anti-AD 自动转换为 MikroTik RouterOS DNS Adlist 可直接使用的 hosts 规则。
+
 [![Update adlist](https://github.com/zzpice/routeros-adlist/actions/workflows/update.yml/badge.svg)](https://github.com/zzpice/routeros-adlist/actions/workflows/update.yml)
+[![License](https://img.shields.io/github/license/zzpice/routeros-adlist)](./LICENSE)
+
+**规则入口：** [adlist.txt](https://raw.githubusercontent.com/zzpice/routeros-adlist/main/adlist.txt)
 
 将 [anti-AD](https://github.com/privacy-protection-tools/anti-AD) 的纯域名列表自动转换为 MikroTik RouterOS `Adlist` 可直接读取的 hosts 格式。
 
