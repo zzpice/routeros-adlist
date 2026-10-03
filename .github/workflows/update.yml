@@ -1,0 +1,49 @@
+name: Update adlist
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "convert.py"
+      - ".github/workflows/update.yml"
+  schedule:
+    - cron: "23 */6 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-adlist
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Build RouterOS adlist
+        run: python convert.py
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          if git diff --quiet -- adlist.txt; then
+            echo "adlist.txt is already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add adlist.txt
+          git commit -m "chore: update adlist"
+          git push
