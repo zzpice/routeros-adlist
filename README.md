@@ -1,24 +1,26 @@
-# adlist
+# routeros-adlist
+
+[![Update adlist](https://github.com/zzpice/routeros-adlist/actions/workflows/update.yml/badge.svg)](https://github.com/zzpice/routeros-adlist/actions/workflows/update.yml)
 
 将 [anti-AD](https://github.com/privacy-protection-tools/anti-AD) 的纯域名列表自动转换为 MikroTik RouterOS `Adlist` 可直接读取的 hosts 格式。
 
-## 使用
+## 快速使用
 
 生成文件：[`adlist.txt`](./adlist.txt)
 
 Raw 地址：
 
 ```text
-https://raw.githubusercontent.com/zzpice/adlist/main/adlist.txt
+https://raw.githubusercontent.com/zzpice/routeros-adlist/main/adlist.txt
 ```
 
 RouterOS：
 
 ```routeros
-/ip/dns/adlist/add url="https://raw.githubusercontent.com/zzpice/adlist/main/adlist.txt" ssl-verify=no
+/ip/dns/adlist/add url="https://raw.githubusercontent.com/zzpice/routeros-adlist/main/adlist.txt" ssl-verify=no
 ```
 
-然后检查导入结果：
+检查导入状态：
 
 ```routeros
 /ip/dns/adlist/print
@@ -37,7 +39,19 @@ GitHub Actions 每 6 小时检查一次 anti-AD：
 3. 去重、排序并转换为 `0.0.0.0 domain.example` 格式；
 4. 只有内容发生变化时才更新 `adlist.txt`。
 
-RouterOS Adlist 本身也会周期性检查远程列表是否更新。
+`adlist.txt` 是自动生成文件，不建议手动修改。RouterOS Adlist 本身也会周期性检查远程列表是否更新。
+
+## 安全保护
+
+转换脚本采用失败关闭策略：
+
+- 下载失败会直接退出；
+- 响应类型异常会拒绝处理；
+- 有效域名少于 50,000 条会拒绝覆盖；
+- 异常数据行过多会拒绝覆盖；
+- 域名会统一规范化、去重并排序。
+
+这样可以避免上游临时故障或错误页面被误发布为规则列表。
 
 ## 本地生成
 
@@ -52,8 +66,6 @@ python convert.py
 ```bash
 python convert.py --source https://anti-ad.net/domains.txt --output adlist.txt --min-domains 50000
 ```
-
-脚本采用“失败关闭”策略：如果上游下载失败、返回异常内容、有效域名数量异常偏低或格式大量异常，会直接退出，不覆盖现有可用列表。
 
 ## 数据来源
 
