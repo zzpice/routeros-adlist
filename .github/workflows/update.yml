@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "convert.py"
+      - "test_convert.py"
       - ".github/workflows/update.yml"
   schedule:
     - cron: "23 */6 * * *"
@@ -30,6 +31,9 @@ jobs:
         uses: actions/setup-python@v7
         with:
           python-version: "3.13"
+
+      - name: Test download recovery
+        run: python -m unittest -v
 
       - name: Build RouterOS adlist
         run: python convert.py

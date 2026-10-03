@@ -7,8 +7,8 @@ import argparse
 import re
 import sys
 import time
+from http.client import IncompleteRead
 from pathlib import Path
-from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 DEFAULT_SOURCE = "https://anti-ad.net/domains.txt"
@@ -36,7 +36,7 @@ def download(url: str, retries: int = 3, timeout: int = 30) -> str:
                 if content_type not in {"text/plain", "application/octet-stream"}:
                     raise RuntimeError(f"unexpected content type: {content_type}")
                 return response.read().decode("utf-8")
-        except (HTTPError, URLError, TimeoutError, UnicodeDecodeError, RuntimeError) as exc:
+        except (OSError, IncompleteRead, UnicodeDecodeError, RuntimeError) as exc:
             last_error = exc
             if attempt < retries:
                 time.sleep(attempt * 2)
