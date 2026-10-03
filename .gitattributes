@@ -1,0 +1,8 @@
+# Treat the large generated blocklist as generated content in GitHub diffs.
+adlist.txt linguist-generated=true
+
+# Keep generated lists and source files on LF line endings.
+*.txt text eol=lf
+*.py text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
