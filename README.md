@@ -55,7 +55,8 @@ GitHub Actions 每 6 小时检查一次 anti-AD：
 - 响应类型异常会拒绝处理；
 - 有效域名少于 50,000 条会拒绝覆盖；
 - 异常数据行过多会拒绝覆盖；
-- 域名会统一规范化、去重并排序。
+- 域名会统一规范化、去重并排序；
+- 文件在同目录写入临时文件、刷新落盘后原子替换，写入失败保留上次产物并清理临时文件。
 
 这样可以避免上游临时故障或错误页面被误发布为规则列表。
 
@@ -65,6 +66,7 @@ GitHub Actions 每 6 小时检查一次 anti-AD：
 
 ```bash
 python convert.py
+python -m unittest -v
 ```
 
 可选参数：
@@ -83,4 +85,4 @@ python convert.py --source https://anti-ad.net/domains.txt --output adlist.txt -
 
 ## 项目体系
 
-属于 [ZZP 工具与资源](https://zzp.moe/)。共同的[设计与仓库规范](https://github.com/zzpice/zzp-home/blob/main/docs/design.md)由入口仓库维护；使用步骤、生成产物和验证方式仍以本仓库为准。
+属于 [ZZP 工具与资源](https://zzp.moe/)。使用、验证与维护方式以本仓库为准。

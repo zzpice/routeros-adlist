@@ -63,5 +63,22 @@ class DownloadRecoveryTests(unittest.TestCase):
                 self.assertEqual(output.read_text(encoding="utf-8"), previous)
 
 
+class PublicationTests(unittest.TestCase):
+    def test_invalid_source_preserves_last_valid_file(self):
+        for text in ["<html>upstream error</html>", "valid.example\n" + "bad data\n" * 101]:
+            with tempfile.TemporaryDirectory() as directory:
+                output = Path(directory) / "adlist.txt"; output.write_text("previous")
+                with patch("convert.download", return_value=text):
+                    with self.assertRaises(RuntimeError): convert.build("https://example.test", output, 1)
+                self.assertEqual(output.read_text(), "previous")
+    def test_failed_atomic_replace_preserves_output_and_cleans_temporary(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "adlist.txt"; output.write_text("previous")
+            with patch("convert.download",return_value="valid.example"), patch("convert.os.replace",side_effect=OSError("disk failure")):
+                with self.assertRaises(OSError): convert.build("https://example.test",output,1)
+            self.assertEqual(output.read_text(),"previous")
+            self.assertEqual(list(Path(directory).iterdir()),[output])
+
+
 if __name__ == "__main__":
     unittest.main()

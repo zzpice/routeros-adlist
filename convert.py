@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import argparse
+import os
+import tempfile
 import re
 import sys
 import time
@@ -96,7 +98,16 @@ def build(source_url: str, output: Path, min_domains: int) -> int:
         )
 
     content = "".join(f"0.0.0.0 {domain}\n" for domain in domains)
-    output.write_text(content, encoding="utf-8", newline="\n")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    fd, temporary = tempfile.mkstemp(dir=output.parent, prefix=".adlist-")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, output)
+    finally:
+        Path(temporary).unlink(missing_ok=True)
     print(f"Wrote {len(domains):,} domains to {output}; rejected {rejected:,} lines.")
     return len(domains)
 
