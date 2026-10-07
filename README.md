@@ -1,11 +1,10 @@
-# routeros-adlist
+# RouterOS Adlist
 
-> 将 anti-AD 自动转换为 MikroTik RouterOS DNS Adlist 可直接使用的 hosts 规则。
+将 anti-AD 自动转换为 MikroTik RouterOS DNS Adlist 可直接使用的 hosts 规则。
 
-[![Update adlist](https://github.com/zzpice/routeros-adlist/actions/workflows/update.yml/badge.svg)](https://github.com/zzpice/routeros-adlist/actions/workflows/update.yml)
-[![License](https://img.shields.io/github/license/zzpice/routeros-adlist)](./LICENSE)
+[接入说明](#快速使用) · [下载 adlist.txt](https://raw.githubusercontent.com/zzpice/routeros-adlist/main/adlist.txt) · [ZZP · 所有项目](https://zzp.moe/)
 
-**规则入口：** [adlist.txt](https://raw.githubusercontent.com/zzpice/routeros-adlist/main/adlist.txt)
+[![检查与更新](https://github.com/zzpice/routeros-adlist/actions/workflows/update.yml/badge.svg)](https://github.com/zzpice/routeros-adlist/actions/workflows/update.yml)
 
 将 [anti-AD](https://github.com/privacy-protection-tools/anti-AD) 的纯域名列表自动转换为 MikroTik RouterOS `Adlist` 可直接读取的 hosts 格式。
 
@@ -81,3 +80,7 @@ python convert.py --source https://anti-ad.net/domains.txt --output adlist.txt -
 ## License
 
 本仓库的转换脚本与自动化配置使用 [MIT License](./LICENSE)。上游规则的许可与归属以 anti-AD 项目为准。
+
+## 项目体系
+
+属于 [ZZP 工具与资源](https://zzp.moe/)。共同的[设计与仓库规范](https://github.com/zzpice/zzp-home/blob/main/docs/design.md)由入口仓库维护；使用步骤、生成产物和验证方式仍以本仓库为准。
