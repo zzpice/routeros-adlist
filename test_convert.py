@@ -10,6 +10,16 @@ from urllib.error import HTTPError, URLError
 import convert
 
 
+class DomainTests(unittest.TestCase):
+    def test_idna_length_is_checked_after_ascii_conversion(self):
+        self.assertEqual(convert.normalize_domain("例子.中国"), "xn--fsqu00a.xn--fiqs8s")
+        self.assertIsNone(convert.normalize_domain(".".join(["例子"] * 30)))
+        longest = ".".join(["a" * 63] * 3 + ["a" * 61])
+        self.assertEqual(len(longest), 253)
+        self.assertEqual(convert.normalize_domain(longest), longest)
+        self.assertIsNone(convert.normalize_domain(longest + "a"))
+
+
 class DownloadRecoveryTests(unittest.TestCase):
     @staticmethod
     def configure_response(opener):

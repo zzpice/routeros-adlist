@@ -56,6 +56,9 @@ def normalize_domain(raw: str) -> str | None:
     except UnicodeError:
         return None
 
+    # IDNA can expand a short Unicode name beyond DNS's ASCII length limit.
+    if len(domain) > 253:
+        return None
     labels = domain.split(".")
     if any(len(label) > 63 or not _LABEL_RE.fullmatch(label) for label in labels):
         return None
